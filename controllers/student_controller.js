@@ -1,6 +1,6 @@
-const bcrypt = require('bcrypt');
-const Student = require('../models/studentSchema.js');
-const Subject = require('../models/subjectSchema.js');
+import bcrypt from 'bcrypt';
+import Student from '../models/studentSchema.js';
+import Subject from '../models/subjectSchema.js';
 
 const studentRegister = async (req, res) => {
     try {
@@ -337,21 +337,20 @@ const getAttendanceAnalytics = async (req, res) => {
 };
 
 
-module.exports = {
-    studentRegister,
-    studentLogIn,
-    getStudents,
-    getStudentDetail,
-    deleteStudents,
-    deleteStudent,
-    updateStudent,
-    studentAttendance,
-    deleteStudentsByClass,
-    updateExamResult,
-
-    clearAllStudentsAttendanceBySubject,
-    clearAllStudentsAttendance,
-    removeStudentAttendanceBySubject,
-    removeStudentAttendance,
-    getAttendanceAnalytics,
+export {
+  studentRegister,
+  studentLogIn,
+  getStudents,
+  getStudentDetail,
+  deleteStudent,
+  deleteStudents,
+  deleteStudentsByClass,
+  updateStudent,
+  updateExamResult,
+  studentAttendance,
+  clearAllStudentsAttendanceBySubject,
+  clearAllStudentsAttendance,
+  removeStudentAttendanceBySubject,
+  removeStudentAttendance,
+  getAttendanceAnalytics,
 };

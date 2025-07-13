@@ -1,8 +1,8 @@
-const Parent = require('../models/parentSchema');
-const Student = require('../models/studentSchema');
-const Notice = require('../models/noticeSchema');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+import Parent from '../models/parentSchema.js';
+import Student from '../models/studentSchema.js';
+import Notice from '../models/noticeSchema.js';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 const parentRegister = async (req, res) => {
     try {
@@ -73,4 +73,4 @@ const updateParent = async (req, res) => {
     }
 }
 
-module.exports = { parentRegister, parentLogin, getParentChildren, getParentNotices, updateParent }; 
+export { parentRegister, parentLogin, getParentChildren, getParentNotices, updateParent }; 

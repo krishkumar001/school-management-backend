@@ -1,6 +1,6 @@
-const bcrypt = require('bcrypt');
-const Teacher = require('../models/teacherSchema.js');
-const Subject = require('../models/subjectSchema.js');
+import bcrypt from 'bcrypt';
+import Teacher from '../models/teacherSchema.js';
+import Subject from '../models/subjectSchema.js';
 
 const teacherRegister = async (req, res) => {
     const { name, email, password, role, school, teachSubject, teachSclass } = req.body;
@@ -204,15 +204,15 @@ const updateTeacher = async (req, res) => {
     }
 }
 
-module.exports = {
-    teacherRegister,
-    teacherLogIn,
-    getTeachers,
-    getTeacherDetail,
-    updateTeacherSubject,
-    deleteTeacher,
-    deleteTeachers,
-    deleteTeachersByClass,
-    teacherAttendance,
-    updateTeacher
+export {
+  teacherRegister,
+  teacherLogIn,
+  getTeachers,
+  getTeacherDetail,
+  updateTeacherSubject,
+  deleteTeacher,
+  deleteTeachers,
+  deleteTeachersByClass,
+  teacherAttendance,
+  updateTeacher
 };

@@ -1,4 +1,4 @@
-const Message = require('../models/messageSchema');
+import Message from '../models/messageSchema.js';
 
 // Send a message
 const sendMessage = async (req, res) => {
@@ -59,4 +59,4 @@ const markAsRead = async (req, res) => {
     }
 };
 
-module.exports = { sendMessage, getMessages, getConversation, markAsRead }; 
+export { sendMessage, getMessages, getConversation, markAsRead }; 

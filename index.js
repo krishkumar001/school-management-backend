@@ -35,59 +35,70 @@ app.use(cors());
 console.log('MONGO_URL:', process.env.MONGO_URL);
 
 async function ensureDemoUsers() {
-  // 1. Upsert demo admin
-  let adminPassword = await bcrypt.hash('zxc', 10);
-  let admin = await Admin.findOneAndUpdate(
-    { email: 'yogendra@12' },
-    {
-      name: 'Demo Admin',
-      email: 'yogendra@12',
-      password: adminPassword,
-      schoolName: 'Demo School',
-      role: 'Admin'
-    },
-    { upsert: true, new: true }
-  );
+  try {
+    console.log('Creating demo users...');
+    // 1. Upsert demo admin
+    let adminPassword = await bcrypt.hash('zxc', 10);
+    let admin = await Admin.findOneAndUpdate(
+      { email: 'yogendra@12' },
+      {
+        name: 'Demo Admin',
+        email: 'yogendra@12',
+        password: adminPassword,
+        schoolName: 'Demo School',
+        role: 'Admin'
+      },
+      { upsert: true, new: true }
+    );
+    console.log('Demo admin created/updated');
 
-  // 2. Upsert demo class
-  const sclass = await Sclass.findOneAndUpdate(
-    { sclassName: '12', school: admin._id },
-    {
-      sclassName: '12',
-      school: admin._id
-    },
-    { upsert: true, new: true }
-  );
+    // 2. Upsert demo class
+    const sclass = await Sclass.findOneAndUpdate(
+      { sclassName: '12', school: admin._id },
+      {
+        sclassName: '12',
+        school: admin._id
+      },
+      { upsert: true, new: true }
+    );
+    console.log('Demo class created/updated');
 
-  // 3. Upsert demo teacher
-  let teacherPassword = await bcrypt.hash('zxc', 10);
-  await Teacher.findOneAndUpdate(
-    { email: 'tony@12' },
-    {
-      name: 'Demo Teacher',
-      email: 'tony@12',
-      password: teacherPassword,
-      school: admin._id,
-      teachSclass: sclass._id,
-      role: 'Teacher'
-    },
-    { upsert: true, new: true }
-  );
+    // 3. Upsert demo teacher
+    let teacherPassword = await bcrypt.hash('zxc', 10);
+    await Teacher.findOneAndUpdate(
+      { email: 'tony@12' },
+      {
+        name: 'Demo Teacher',
+        email: 'tony@12',
+        password: teacherPassword,
+        school: admin._id,
+        teachSclass: sclass._id,
+        role: 'Teacher'
+      },
+      { upsert: true, new: true }
+    );
+    console.log('Demo teacher created/updated');
 
-  // 4. Upsert demo student
-  let studentPassword = await bcrypt.hash('zxc', 10);
-  await Student.findOneAndUpdate(
-    { rollNum: 1, name: 'Deeepesh Awasthi' },
-    {
-      name: 'Deeepesh Awasthi',
-      rollNum: 1,
-      password: studentPassword,
-      sclassName: sclass._id,
-      school: admin._id,
-      role: 'Student'
-    },
-    { upsert: true, new: true }
-  );
+    // 4. Upsert demo student
+    let studentPassword = await bcrypt.hash('zxc', 10);
+    await Student.findOneAndUpdate(
+      { rollNum: 1, name: 'Deeepesh Awasthi' },
+      {
+        name: 'Deeepesh Awasthi',
+        rollNum: 1,
+        password: studentPassword,
+        sclassName: sclass._id,
+        school: admin._id,
+        role: 'Student'
+      },
+      { upsert: true, new: true }
+    );
+    console.log('Demo student created/updated');
+    console.log('All demo users created successfully');
+  } catch (error) {
+    console.error('Error creating demo users:', error);
+    // Don't fail the startup if demo user creation fails
+  }
 }
 
 mongoose
@@ -95,8 +106,12 @@ mongoose
         useNewUrlParser: true,
         useUnifiedTopology: true
     })
-    .then(() => {
+    .then(async () => {
         console.log("Connected to MongoDB");
+        
+        // Create demo users in background, don't wait for completion
+        ensureDemoUsers().catch(err => console.error('Demo user creation failed:', err));
+        
         app.use('/', Routes);
 
         // Socket.IO connection
@@ -114,4 +129,7 @@ mongoose
           console.log('Server started on port', process.env.PORT || 5000);
         });
     })
-    .catch((error) => console.log("NOT CONNECTED TO NETWORK", error));
+    .catch((error) => {
+        console.error("MongoDB connection failed:", error);
+        process.exit(1);
+    });

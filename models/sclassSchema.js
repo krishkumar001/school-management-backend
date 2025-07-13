@@ -12,5 +12,5 @@ const sclassSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
-export default mongoose.model('Sclass', sclassSchema);
+export default mongoose.model("sclass", sclassSchema);
 

@@ -20,4 +20,4 @@ const noticeSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
-export default mongoose.model('Notice', noticeSchema);
+export default mongoose.model("notice", noticeSchema);
