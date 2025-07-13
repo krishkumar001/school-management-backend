@@ -95,9 +95,8 @@ mongoose
         useNewUrlParser: true,
         useUnifiedTopology: true
     })
-    .then(async () => {
+    .then(() => {
         console.log("Connected to MongoDB");
-        await ensureDemoUsers();
         app.use('/', Routes);
 
         // Socket.IO connection
